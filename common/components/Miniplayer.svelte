@@ -29,6 +29,7 @@
   import { page, modal } from '@/modules/navigation.js'
   import { settings } from '@/modules/settings.js'
   import { SUPPORTS } from '@/modules/support.js'
+  import { ELECTRON } from '@/modules/bridge.js'
   import { click } from '@/modules/click.js'
 
   export let playbackPaused = true
@@ -50,6 +51,7 @@
   let top = '0px'
   let container = null
   let dragging = false
+  let resizing = false
   let dragId = 1
   let shelveLeft = false
   let touchShelveTime = 0
@@ -59,7 +61,9 @@
   let peekActive = false
   let idleTimeout = null
   let shelveTimeout = null
+  let shelvingTime = 0
   let lastEdgeEnterUnshelve = 0
+  let electronMinimized = false
 
   $: draggingPos = ''
   $: resize = !$isMobile
@@ -69,7 +73,7 @@
   $: playerPage = $page === page.PLAYER && (!$modal || !modal.length || !modal.exists(modal.ANIME_DETAILS))
   $: shelveTabLeft = shelved ? shelveLeft : !!(position + draggingPos).match(/left/i)
   $: {
-    if (active) idleShelve(playbackPaused, $settings.autoHideMiniplayer)
+    if (active && !dragging && !resizing) idleShelve(playbackPaused, $settings.autoHideMiniplayer)
     else if (shelved) unshelve()
   }
   $: paddingTop = (() => {
@@ -94,7 +98,7 @@
       touchShelveTime = 0
       padding = '0rem'
       position = ''
-      if (paddingLeft === '32rem') clampedLeft = remToPixels(parseFloat('30rem'))
+      if (paddingLeft === '32rem') clampedLeft = remToPixels(parseFloat('30'))
       const bounds = container.getBoundingClientRect()
       const relativeBounds = container.offsetParent.getBoundingClientRect() ?? { left: 0, top: 0 }
       const { pointerId, offsetX, offsetY, target } = event
@@ -161,6 +165,7 @@
     let startX = 0
 
     function resizeStart({ clientX, touches, pointerId }) {
+      resizing = true
       startX = touches?.[0]?.clientX ?? clientX
       startRatio = widthRatio ?? minWidthRatio
       document.body.addEventListener('pointermove', handleResize)
@@ -175,6 +180,7 @@
     }
 
     function resizeEnd({ pointerId }) {
+      resizing = false
       document.body.removeEventListener('pointermove', handleResize)
       if (pointerId) node.releasePointerCapture(pointerId)
       cacheRatio()
@@ -249,14 +255,15 @@
     clearTimeout(shelveTimeout)
     if (isPaused && !hovered && autoHide) {
       shelveTimeout = setTimeout(() => {
-        if (playbackPaused && !hovered && active) triggerShelve()
-      }, 5_000)
+        if (playbackPaused && !hovered && active && !dragging && !resizing) triggerShelve()
+      }, 15_000)
     } else if (!isPaused) unshelve()
   }
   function triggerShelve() {
     const posStr = position + draggingPos
     shelveLeft = !!(posStr.match(/left/i))
     shelved = true
+    shelvingTime = Date.now()
     resetIdleBounce()
   }
   function unshelve() {
@@ -273,22 +280,22 @@
   }
 
   function handleEdgeEnter() {
+    if (electronMinimized) return
     hovered = true
-    if (shelved && settings.value.autoHideMiniplayer) {
-      shelved = false
-      bouncing = false
-      bounceId++
-      clearTimeout(idleTimeout)
-      lastEdgeEnterUnshelve = Date.now()
+    const now = Date.now()
+    if (shelved && settings.value.autoHideMiniplayer && (!shelvingTime || (now - shelvingTime > 400))) {
+      if (peekActive) cancelBounce()
+      unshelve()
+      lastEdgeEnterUnshelve = now
     }
     clearTimeout(shelveTimeout)
   }
   function handleEdgeLeave() {
     hovered = false
-    if (playbackPaused && active && settings.value.autoHideMiniplayer) {
+    if (playbackPaused && active && !dragging && !resizing && settings.value.autoHideMiniplayer) {
       clearTimeout(shelveTimeout)
       shelveTimeout = setTimeout(() => {
-        if (playbackPaused && !hovered && active) triggerShelve()
+        if (playbackPaused && !hovered && active && !dragging && !resizing) triggerShelve()
       }, 3_000)
     }
   }
@@ -345,7 +352,7 @@
     idleTimeout = setTimeout(() => {
       if (!shelved || hovered) return
       triggerBounce()
-    }, 15_000)
+    }, 5_000)
   }
   function triggerBounce() {
     const _bounceId = ++bounceId
@@ -364,7 +371,7 @@
     bouncing = false
     peekActive = false
     container.style.transform = `translateX(${(new DOMMatrix(window.getComputedStyle(container).transform)).m41}px)`
-    requestAnimationFrame(() => requestAnimationFrame(() => container.style.transform = ''))
+    requestAnimationFrame(() => container.style.transform = '')
     resetIdleBounce()
   }
   function onGlobalActivity() {
@@ -373,6 +380,14 @@
       cancelBounce()
     } else resetIdleBounce()
   }
+
+  const handleVisibility = visible => {
+    requestAnimationFrame(() => electronMinimized = !visible)
+  }
+  ELECTRON.isMinimized().then(isMinimized => {
+    handleVisibility(!isMinimized)
+    ELECTRON.onMinimize(handleVisibility)
+  })
 
   onMount(() => {
     calculateWidth()
@@ -525,7 +540,7 @@
   }
   .miniplayer-container:not(.shelved):not(.player-page) {
     transform: translateX(0);
-    transition: transform 0.20s cubic-bezier(0.4, 0, 0.2, 1), top 0.5s cubic-bezier(0.3, 1.5, 0.8, 1), left 0.5s cubic-bezier(0.3, 1.5, 0.8, 1);
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), top 0.5s cubic-bezier(0.3, 1.5, 0.8, 1), left 0.5s cubic-bezier(0.3, 1.5, 0.8, 1);
   }
   .miniplayer-container.shelved-right:not(.player-page) {
     transform: translateX(calc(100% - 3px));
@@ -536,11 +551,9 @@
     transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .miniplayer-container.shelved-right.bouncing {
-    transition: none !important;
     animation: peek-right 1.15s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
   .miniplayer-container.shelved-left.bouncing {
-    transition: none !important;
     animation: peek-left 1.15s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
   @keyframes peek-right {
@@ -564,7 +577,7 @@
     transition: opacity 0.15s ease 0.35s;
   }
   .shelf-tab-right {
-    width: 2.5rem;
+    width: 2.6rem;
     left: -1px;
     border-top-left-radius: 1rem;
     border-bottom-left-radius: 1rem;
