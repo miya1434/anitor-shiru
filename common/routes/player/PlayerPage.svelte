@@ -148,13 +148,16 @@
   }
 
   const updateSubs = debounce(() => {
-    subs?.renderer?.resize()
-    seek(-0.001)
-    requestAnimationFrame(() => {
-      if (video.currentTime !== 0) seek(0.001)
-    })
+    if (!subs?.renderer) return
+    subs.renderer.resize()
+    if (paused) {
+      seek(-0.001)
+      requestAnimationFrame(() => {
+        if (video.currentTime !== 0) seek(0.001)
+      })
+    }
   }, 200) // stupid fix (resize) because video metadata doesn't update for multiple frames
-  function checkSubtitle () {
+  function checkSubtitle() {
     const lastSubtitle = cache.getEntry(caches.HISTORY, 'lastSubtitle')?.[`${media?.media?.id || media?.title || media?.parseObject?.title || media?.parseObject?.file_name}`]
     if (subHeaders?.length && lastSubtitle) {
       if (lastSubtitle === 'OFF') {
@@ -361,7 +364,7 @@
   let subDelayVisible = false
   let subDelayTimeout
   $: updateDelay(subDelay)
-  function updateDelay (delay) {
+  function updateDelay(delay) {
     if (subs?.renderer) {
       subs.renderer.timeOffset = Number(delay)
       updateSubs()
