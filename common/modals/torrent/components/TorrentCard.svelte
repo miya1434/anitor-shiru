@@ -205,7 +205,7 @@
     const audio = !Array.isArray(aud) ? [aud] : aud
     const resolutions = resolution ? (Array.isArray(resolution) ? resolution : [resolution]) : []
     const removeTerm = term => {
-      if (term) simpleName = simpleName.replace(new RegExp(String(term).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'), '')
+      if (term) simpleName = simpleName.replace(new RegExp(`(TITLE_PLACEHOLDER_\\d+)|${String(term).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`, 'gi'), (match, placeholder) => placeholder ?? '')
     }
 
     // Preprocess simpleName: remove titles from search.media.titles if they exist to prevent incorrect termMappings e.g; Synduality Noir being detected as Dual Audio (SynDUALity).
