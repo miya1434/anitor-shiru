@@ -213,7 +213,6 @@
         data-option='search'
         placeholder='Filter notifications by their titles' bind:value={searchText} on:input={(event) => updateSearch(event.target.value)} />
   </div>
-  <div class='shadow-overlay' class:d-none={!$notifications?.length} />
   {#if $notifications?.length && !currentNotifications?.length}
     <ErrorCard promise={{ errors: [ { message: 'found no results' }]}}/>
   {/if}
@@ -227,7 +226,7 @@
         {@const behind = Helper.isAuthorized() && !announcement && !delayed && isValidNumber(notification.episode) && (notification.episode - 1) >= 1 && (media?.mediaListEntry?.status !== 'COMPLETED' && ((media?.mediaListEntry?.progress || -1) < ((!isValidNumber(notification.season) ? notification.episode : media?.episodes) - 1)))}
         {@const completed = !announcement && !delayed && !notWatching && !behind && isValidNumber(notification.episode) && (media?.mediaListEntry?.status === 'COMPLETED' || (media?.mediaListEntry?.progress >= (!isValidNumber(notification.season) ? notification.episode : media?.episodes)))}
         {@const resolvedHash = getHash(notification.id, { episode: notification.episode, client: true }, false, true)}
-        <div class='notification-item shadow-lg position-relative d-flex align-items-center mx-20 my-5 p-5 scale pointer' class:mt-10={index === 0} role='button' tabindex='0' class:not-reactive={!$reactive} class:read={notification.read} class:behind={(behind && !notWatching) || delayed} class:current={!behind && !notWatching && !repeating} class:repeating={!behind && !notWatching && repeating} class:not-watching={notWatching} class:completed={completed} class:announcement={announcement}
+        <div class='notification-item shadow-lg position-relative d-flex align-items-center mx-20 my-5 p-5 scale pointer' class:mt-15={index === 0} role='button' tabindex='0' class:not-reactive={!$reactive} class:read={notification.read} class:behind={(behind && !notWatching) || delayed} class:current={!behind && !notWatching && !repeating} class:repeating={!behind && !notWatching && repeating} class:not-watching={notWatching} class:completed={completed} class:announcement={announcement}
              use:blurExit={ () => { if (notification.prompt) setTimeout(() => preventScroll(container.scrollTop, () => delete notification.prompt)) }}
              use:hoverExit={() => { if (notification.prompt) setTimeout(() => preventScroll(container.scrollTop, () => delete notification.prompt)) }}
              use:click={() => {
@@ -392,15 +391,19 @@
   .rounded-5 {
     border-radius: .5rem;
   }
-  .shadow-overlay {
+  .long-input::after {
+    content: '';
     position: absolute;
+    bottom: -2.2rem;
     left: 0;
     right: 0;
     height: 1.2rem;
-    margin-top: 11.3rem;
-    box-shadow: 0 1.2rem 1.2rem var(--dark-color-dim);
+    background: linear-gradient(to bottom, var(--dark-color-dim), transparent);
     pointer-events: none;
     z-index: 1;
+  }
+  .long-input.d-none::after {
+    display: none;
   }
 
   .prompt {

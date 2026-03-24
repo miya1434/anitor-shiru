@@ -34,7 +34,7 @@
   <p class='my-0 text-center text-white font-scale-24 font-weight-semi-bold'>Minimize or Exit?</p>
   <p class='mt-1 text-center text-wrap'>Minimizing keeps Shiru running in the {VERSION.platform !== 'darwin' ? 'system tray' : 'dock and menu bar'} to continue receiving notifications and seeding torrents.</p>
   <div class='mb-20 modal-body d-flex flex-column justify-content-center align-items-center'>
-    <div class='custom-switch'>
+    <div class='custom-switch fit-content'>
       <input type='checkbox' id='remember-choice' bind:checked={$modal[modal.MINIMIZE_PROMPT].data} />
       <label for='remember-choice'>{'Don\'t ask again'}</label>
     </div>

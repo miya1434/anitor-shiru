@@ -51,21 +51,21 @@
 </SettingCard>
 {#if !SUPPORTS.isAndroid}
   <SettingCard title='Donate Button' description='Enables the "Support This App" button on the side bar.'>
-    <div class='custom-switch'>
+    <div class='custom-switch fit-content'>
       <input type='checkbox' id='donate' bind:checked={settings.donate} />
       <label for='donate'>{settings.donate ? 'On' : 'Off'}</label>
     </div>
   </SettingCard>
 {/if}
 <SettingCard title='Expandable Sidebar' description='Enables the sidebar to expand revealing detailed text for the navigation buttons.'>
-  <div class='custom-switch'>
+  <div class='custom-switch fit-content'>
     <input type='checkbox' id='disable-sidebar' bind:checked={settings.expandingSidebar} />
     <label for='disable-sidebar'>{settings.expandingSidebar ? 'On' : 'Off'}</label>
   </div>
 </SettingCard>
 {#if SUPPORTS.isAndroid}
   <SettingCard title='Expandable Lists' description='Choose whether lists like recommendations or relations, open as dropdowns or scroll horizontally. Scrollable lists work better on smaller screens.'>
-    <div class='custom-switch'>
+    <div class='custom-switch fit-content'>
       <input type='checkbox' id='toggle-list' bind:checked={settings.toggleList} />
       <label for='toggle-list'>{settings.toggleList ? 'On' : 'Off'}</label>
     </div>
@@ -87,20 +87,20 @@
 </SettingCard>
 {#if SUPPORTS.isAndroid && settings.cards === 'small'}
   <SettingCard title='Card Preview' description='If a detailed preview card should be shown when tapping or hovering over the small card.'>
-    <div class='custom-switch'>
+    <div class='custom-switch fit-content'>
       <input type='checkbox' id='card-preview' bind:checked={settings.cardPreview} />
       <label for='card-preview'>{settings.cardPreview ? 'On' : 'Off'}</label>
     </div>
   </SettingCard>
 {/if}
 <SettingCard title='Card Audio' description={'If the sub, dub, partial dub, and age rating icons should be shown on the cards, the corresponding episode number will be shown when possible. Additionally a label will be shown on the preview cards, anime view, episode cards, and the home banner of the highest possible audio available, either dub, partial dub, or sub. Note these will not be visible when viewing the schedule page. '}>
-  <div class='custom-switch'>
+  <div class='custom-switch fit-content'>
     <input type='checkbox' id='card-audio' bind:checked={settings.cardAudio} />
     <label for='card-audio'>{settings.cardAudio ? 'On' : 'Off'}</label>
   </div>
 </SettingCard>
 <SettingCard title='Prefer Dubs' description={'If your progress on a series matches the latest aired dubbed episode, the series will be hidden from Continue Watching until the next dub is available. Notifications will only be sent when a dubbed episode is released or if the series is sub-only (i.e., no dub exists).\n\nIf your progress goes beyond the latest dubbed episode, this setting will be ignored and the series will be treated as subbed. The Subbed Releases section will automatically hide dubbed series, and Dubbed Releases will hide subbed ones.\n\nThis setting is ideal for viewers who prefer dubbed content whenever available.'}>
-  <div class='custom-switch'>
+  <div class='custom-switch fit-content'>
     <input type='checkbox' id='prefer-dubs' bind:checked={settings.preferDubs} />
     <label for='prefer-dubs'>{settings.preferDubs ? 'On' : 'Off'}</label>
   </div>
@@ -114,7 +114,7 @@
 </SettingCard>
 {#if settings.adult === 'hentai'}
   <SettingCard title='Hentai Banner' description={'Changes the displayed series on the home page banner to be exclusively Hentai.'}>
-    <div class='custom-switch'>
+    <div class='custom-switch fit-content'>
       <input type='checkbox' id='hentai-banner' bind:checked={settings.hentaiBanner} />
       <label for='hentai-banner'>{settings.hentaiBanner ? 'On' : 'Off'}</label>
     </div>
@@ -138,7 +138,7 @@
 {/if}
 <h4 class='mb-10 font-weight-bold'>Notification Settings</h4>
 <SettingCard title='System Notifications' description={'Allows custom system notifications to be sent, with this disabled you will still get in-app notifications. If you enable system notifications and have MULTIPLE Notification Feeds specified, such as RSS, Releases, and Anilist you WILL be spammed with multiple notifications. Consider choosing a single feed based on your needs.'}>
-  <div class='custom-switch'>
+  <div class='custom-switch fit-content'>
     <input type='checkbox' id='system-notify' bind:checked={settings.systemNotify} />
     <label for='system-notify'>{settings.systemNotify ? 'On' : 'Off'}</label>
   </div>
@@ -203,13 +203,13 @@
 <h4 class='mb-10 font-weight-bold'>Home Screen Settings</h4>
 {#if Helper.isAuthorized()}
   <SettingCard title='Hide My Anime' description={'The anime on your Watching, Rewatching, Completed, and Dropped list will automatically be hidden from the default sections, this excludes manually added RSS feeds and user specific feeds.'}>
-    <div class='custom-switch'>
+    <div class='custom-switch fit-content'>
       <input type='checkbox' id='hide-my-anime' bind:checked={settings.hideMyAnime} />
       <label for='hide-my-anime'>{settings.hideMyAnime ? 'On' : 'Off'}</label>
     </div>
   </SettingCard>
 {/if}
-<SettingCard title='RSS Feeds' description={`RSS feeds to display on the home screen. This needs to be a CORS enabled URL to a RSS feed which cotains either an "infoHash" or "enclosure" tag. This only shows the releases on the home screen, it doesn't automatically download the content.\n\nSince the feeds only provide the name of the file, Shiru might not always detect the anime correctly! Some presets for popular groups are already provided as an example, custom feeds require the FULL URL. Be aware that adding more than 5 RSS URLs could result in getting rate limited. These will always be resolved and handle notifications so not adding them as a home sections makes no difference.`}>
+<SettingCard title='RSS Feeds' description={`RSS feeds to display on the home screen. This needs to be a CORS enabled URL to a RSS feed which contains either an "infoHash" or "enclosure" tag. This only shows the releases on the home screen, it doesn't automatically download the content.\n\nSince the feeds only provide the name of the file, Shiru might not always detect the anime correctly! Some presets for popular groups are already provided as an example, custom feeds require the FULL URL. Be aware that adding more than 5 RSS URLs could result in getting rate limited. These will always be resolved and handle notifications so not adding them as a home sections makes no difference.`}>
   <div>
     {#each settings.rssFeedsNew as _, i}
       <div class='input-group mb-10 w-500 mw-full'>

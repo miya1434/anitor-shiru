@@ -121,8 +121,8 @@
   const deliveryText = 'This update was delivered directly from the GitHub release. If you originally downloaded this app from F-Droid or IzzyOnDroid, note that updating through this method bypasses the extra review and screening normally conducted by those platforms.'
 </script>
 
-<SoftModal class='m-0 pt-0 d-flex flex-column rounded bg-very-dark scrollbar-none viewport-md-4-3 border-md w-full h-full rounded-10' css='z-105 m-0 p-0 modal-soft-ellipse' innerCss='m-0 p-0' showModal={$modal[modal.UPDATE_PROMPT]} close={() => {}} id={modal.UPDATE_PROMPT}>
-  <div class='update-header bg-very-dark px-20 px-md-40 mt-md-15 mb-10 pb-15 border-bottom pt-safe-area' class:mt-15={!SUPPORTS.isAndroid}>
+<SoftModal class='m-0 pt-0 d-flex flex-column bg-very-dark scrollbar-none viewport-md-4-3 border-md w-full h-full rounded-md-10' css='z-105 m-0 p-0 modal-soft-ellipse' innerCss='m-0 p-0' showModal={$modal[modal.UPDATE_PROMPT]} close={() => {}} id={modal.UPDATE_PROMPT}>
+  <div class='update-header bg-very-dark px-20 px-md-40 mt-md-15 mb-1 pb-15 border-bottom pt-safe-area' class:mt-15={!SUPPORTS.isAndroid}>
     <div class='text-muted w-full mt-20 mt-md-0 pt-safe-area'>
       <div class='d-flex align-items-center mb-10'>
         <Sparkles class='mr-15 text-white' size='3.6rem' strokeWidth='2'/>
@@ -152,8 +152,7 @@
     <UpdatelogSk {deliveryText} />
   {:then changelog}
     {@const isLesser = changelog?.preVersion && semver.lt(version, changelog.preVersion)}
-    <div><div class='shadow-overlay'/></div>
-    <div class='pt-10 px-20 px-md-40 overflow-y-auto'>
+    <div class='pt-20 px-20 px-md-40 overflow-y-auto'>
       {#if isNightlyVersion}
         <div class='nightly-box mb-20 p-15 rounded-2 d-flex align-items-start'>
           <TriangleAlert class='mr-10 flex-shrink-0' size='2rem' />
@@ -242,13 +241,17 @@
     background: color-mix(in srgb, var(--tertiary-color) 10%, transparent);
     border: 1px solid color-mix(in srgb, var(--tertiary-color) 30%, transparent);
   }
-  .shadow-overlay {
+  .update-header {
+    position: relative;
+  }
+  .update-header::after {
+    content: '';
     position: absolute;
+    bottom: -12px;
     left: 0;
     right: 0;
     height: 1.4rem;
-    margin-top: -2rem;
-    box-shadow: 0 1.2rem 1rem var(--dark-color-dim);
+    background: linear-gradient(to bottom, var(--dark-color-dim), transparent);
     pointer-events: none;
     z-index: 1;
   }

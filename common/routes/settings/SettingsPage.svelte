@@ -128,25 +128,25 @@
 
 <Tabs>
   <div class='d-flex w-full h-full position-relative settings root flex-md-row flex-column'>
-    <div class='d-flex flex-column h-lg-full bg-dark position-absolute position-lg-relative bb-10 w-full w-lg-300 z-10 flex-lg-shrink-0 br-10' class:status-transition={statusTransition} class:pt-28px={!SUPPORTS.isAndroid && !$status.match(/offline/i)} class:pt-lg-28px={SUPPORTS.isAndroid && !$status.match(/offline/i)} class:pt-safe-area={SUPPORTS.isAndroid && !$status.match(/offline/i)}>
-      <div class='px-20 py-5 font-size-24 font-weight-semi-bold position-absolute d-none d-lg-block'>Settings</div>
-      <div class='mt-lg-20 py-lg-20 py-10 d-flex flex-lg-column flex-row justify-content-center justify-content-lg-start align-items-center align-items-lg-start'>
-        {#each Object.values(groups) as group}
-          <TabLabel name={group.name} action={group.action} sidebar={group.sidebar} substitute={group.substitute} let:active>
-            {@const isActive = ((!$modal || !modal.length) && active) || (group.name === 'Profiles' && modal.focused === modal.PROFILE)}
-            <svelte:component this={group.icon} size='3.6rem' stroke-width='2.5' class='flex-shrink-0 p-5 m-5 rounded' color={isActive ? 'currentColor' : 'var(--gray-color-very-dim)'} fill={group.icon === Play ? (isActive ? 'currentColor' : 'var(--gray-color-very-dim)') : 'transparent'} />
-            <div class='font-size-16 line-height-normal d-none d-sm-block mr-10 text-truncate' style='color: {isActive ? `currentColor` : `var(--gray-color-very-dim)`}'>{group.name}</div>
-          </TabLabel>
-        {/each}
-      </div>
-      <div class='d-none d-lg-block mt-auto'>
-        <p class='text-muted px-20 py-10 m-0'>Restart may be required for some settings to take effect.</p>
-        <p class='text-muted px-20 pb-10 m-0'>If you don't know what settings do what, use defaults.</p>
-        <p class='text-muted px-20 m-0 mb-lg-20'>{version ? `v${version} ${semver.prerelease(version) ? `(Nightly)` : ``}` : ``} {platformMap[VERSION.platform] || 'dev'} {VERSION.arch || 'dev'} {capitalize(VERSION.session) || ''}</p>
+    <div class='tab-container bg-dark position-absolute position-lg-relative h-lg-full w-full w-lg-300 br-10 z-10 pb-1' class:status-transition={statusTransition} class:pt-28px={!SUPPORTS.isAndroid && !$status.match(/offline/i)} class:pt-lg-28px={SUPPORTS.isAndroid && !$status.match(/offline/i)} class:pt-safe-area={SUPPORTS.isAndroid && !$status.match(/offline/i)}>
+      <div class='d-flex flex-column flex-lg-shrink-0 h-lg-full w-full w-lg-300 bb-10'>
+        <div class='px-20 py-5 font-size-24 font-weight-semi-bold position-absolute d-none d-lg-block'>Settings</div>
+        <div class='mt-lg-20 py-lg-20 py-10 d-flex flex-lg-column flex-row justify-content-center justify-content-lg-start align-items-center align-items-lg-start'>
+          {#each Object.values(groups) as group}
+            <TabLabel name={group.name} action={group.action} sidebar={group.sidebar} substitute={group.substitute} let:active>
+              {@const isActive = ((!$modal || !modal.length) && active) || (group.name === 'Profiles' && modal.focused === modal.PROFILE)}
+              <svelte:component this={group.icon} size='3.6rem' stroke-width='2.5' class='flex-shrink-0 p-5 m-5 rounded' color={isActive ? 'currentColor' : 'var(--gray-color-very-dim)'} fill={group.icon === Play ? (isActive ? 'currentColor' : 'var(--gray-color-very-dim)') : 'transparent'} />
+              <div class='font-size-16 line-height-normal d-none d-sm-block mr-10' style='color: {isActive ? `currentColor` : `var(--gray-color-very-dim)`}'>{group.name}</div>
+            </TabLabel>
+          {/each}
+        </div>
+        <div class='d-none d-lg-block mt-auto'>
+          <p class='text-muted px-20 py-10 m-0'>Not sure what a setting does? Leave it as default. Some settings require the app to be restarted to take effect.</p>
+          <p class='text-muted px-20 m-0 mb-lg-20'>{version ? `v${version} ${semver.prerelease(version) ? `(Nightly)` : ``}` : ``} {platformMap[VERSION.platform] || 'dev'} {VERSION.arch || 'dev'} {capitalize(VERSION.session) || ''}</p>
+        </div>
       </div>
     </div>
     <div class='mt-75 mt-lg-0 w-full overflow-y-auto overflow-y-md-hidden' class:status-transition={statusTransition} class:pt-28px={!SUPPORTS.isAndroid && !$status.match(/offline/i)} class:pt-lg-28px={SUPPORTS.isAndroid && !$status.match(/offline/i)} class:pt-safe-area={SUPPORTS.isAndroid && !$status.match(/offline/i)}>
-      <div class='shadow-overlay d-lg-none' />
       <Tab>
         <div class='root h-full w-full overflow-y-md-auto p-20 pt-5'>
           <div class='scroll-container'>
@@ -229,17 +229,28 @@
   .settings :global(input:not(:focus):invalid) {
     box-shadow: 0 0 0 0.2rem var(--danger-color) !important;
   }
-  .shadow-overlay {
+  .tab-container::before {
+    content: '';
     position: absolute;
+    bottom: -9px;
     left: 0;
     right: 0;
     height: 1.2rem;
-    box-shadow: 0 1.2rem 1.2rem var(--dark-color-dim);
+    background: linear-gradient(to bottom, var(--dark-color), transparent);
     pointer-events: none;
-    margin-top: -1.6rem;
-    z-index: 1;
+    z-index: 100;
+  }
+  @media (min-width: 993px) {
+    .bb-10 {
+      border-bottom: none !important;
+    }
+  }
+  @media (max-width: 992px) {
+    .br-10 {
+      border-right: none !important;
+    }
   }
   .bb-10 {
-    border-bottom: .10rem var(--border-color-sp) solid !important;
+    border-bottom: .10rem var(--border-color-sp) solid;
   }
 </style>

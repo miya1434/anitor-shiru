@@ -38,14 +38,14 @@
 
 <h4 class='mb-10 font-weight-bold'>Player Settings</h4>
 <SettingCard title='Disable Miniplayer' description='Disables the built-in Miniplayer, this is not recommended but could be useful for small screens. When utilizing the minimize button on the Miniplayer, this setting is changed automatically.'>
-  <div class='custom-switch'>
+  <div class='custom-switch fit-content'>
     <input type='checkbox' id='miniplayer-disabled' bind:checked={$playPage} />
     <label for='miniplayer-disabled'>{$playPage ? 'On' : 'Off'}</label>
   </div>
 </SettingCard>
 {#if !$playPage}
   <SettingCard title='Auto-Hide Miniplayer' description='When enabled, the miniplayer will automatically shelve itself when playback is paused and unshelve when hovered or focused. When disabled, you can manually shelve and unshelve the miniplayer by clicking, tapping or swiping. Whether enabled or disabled the miniplayer will always unshelve itself when playback resumes.'>
-    <div class='custom-switch'>
+    <div class='custom-switch fit-content'>
       <input type='checkbox' id='autohide-miniplayer' bind:checked={settings.autoHideMiniplayer} />
       <label for='autohide-miniplayer'>{settings.autoHideMiniplayer ? 'On' : 'Off'}</label>
     </div>
@@ -62,19 +62,19 @@
     </div>
   </SettingCard>
   <SettingCard title='Find Missing Subtitle Fonts' description="Automatically finds and loads fonts that are missing from a video's subtitles.">
-    <div class='custom-switch'>
+    <div class='custom-switch fit-content'>
       <input type='checkbox' id='player-missingFont' bind:checked={settings.missingFont} />
       <label for='player-missingFont'>{settings.missingFont ? 'On' : 'Off'}</label>
     </div>
   </SettingCard>
 {/if}
 <SettingCard title='Fast Subtitle Rendering' description='Disables blur when rendering subtitles reducing lag. Will cause text and subtitle edges to appear sharper and in rare cases might break styling. If you want better rendering speeds without sacrificing accuracy lower the render resolution limit.'>
-  <div class='custom-switch'>
+  <div class='custom-switch fit-content'>
     <input type='checkbox' id='player-sub-blur' bind:checked={settings.disableSubtitleBlur} />
     <label for='player-sub-blur'>{settings.disableSubtitleBlur ? 'On' : 'Off'}</label>
   </div>
 </SettingCard>
-<SettingCard title='Subtitle Render Resolution Limit' description="Max resolution to render subtitles at. If your resolution is higher than this setting the subtitles will be upscaled lineary. This will GREATLY improve rendering speeds for complex typesetting for slower devices. It's best to lower this on mobile devices which often have high pixel density where their effective resolution might be ~1440p while having small screens and slow processors.">
+<SettingCard title='Subtitle Render Resolution Limit' description="Max resolution to render subtitles at. If your resolution is higher than this setting the subtitles will be upscaled linearly. This will GREATLY improve rendering speeds for complex typesetting for slower devices. It's best to lower this on mobile devices which often have high pixel density where their effective resolution might be ~1440p while having small screens and slow processors.">
   <select class='form-control bg-dark mw-150 w-150 text-truncate' bind:value={settings.subtitleRenderHeight}>
     <option value='0' selected>None</option>
     <option value='1440'>1440p</option>
@@ -117,19 +117,19 @@
 
 <h4 class='mb-10 font-weight-bold'>Playback Settings</h4>
 <SettingCard title='Autoplay Next Episode' description='Automatically starts playing next episode when a video ends.'>
-  <div class='custom-switch'>
+  <div class='custom-switch fit-content'>
     <input type='checkbox' id='player-autoplay' bind:checked={settings.playerAutoplay} />
     <label for='player-autoplay'>{settings.playerAutoplay ? 'On' : 'Off'}</label>
   </div>
 </SettingCard>
 <SettingCard title='Pause On Lost Focus' description='Pauses/Resumes video playback when tabbing in/out of the app.'>
-  <div class='custom-switch'>
+  <div class='custom-switch fit-content'>
     <input type='checkbox' id='player-pause' bind:checked={settings.playerPause} />
     <label for='player-pause'>{settings.playerPause ? 'On' : 'Off'}</label>
   </div>
 </SettingCard>
 <SettingCard title='Auto-Complete Episodes' description='Automatically marks episodes as complete on AniList or MyAnimeList when you finish watching them. You must be logged in.'>
-  <div class='custom-switch'>
+  <div class='custom-switch fit-content'>
     <input type='checkbox' id='player-autocomplete' bind:checked={settings.playerAutocomplete} />
     <label for='player-autocomplete'>{settings.playerAutocomplete ? 'On' : 'Off'}</label>
   </div>
@@ -145,7 +145,7 @@
   </SettingCard>
 {/if}
 <SettingCard title='Deband Video' description='Reduces banding on dark and compressed videos. High performance impact, not recommended for high quality videos.'>
-  <div class='custom-switch'>
+  <div class='custom-switch fit-content'>
     <input type='checkbox' id='player-deband' bind:checked={settings.playerDeband} />
     <label for='player-deband'>{settings.playerDeband ? 'On' : 'Off'}</label>
   </div>
@@ -165,7 +165,7 @@
   </select>
 </SettingCard>
 <SettingCard title='Auto-Skip Intro/Outro' description='Attempt to automatically skip intro and outro. This WILL sometimes skip incorrect chapters, as some of the chapter data is community sourced.'>
-  <div class='custom-switch'>
+  <div class='custom-switch fit-content'>
     <input type='checkbox' id='player-skip' bind:checked={settings.playerSkip} />
     <label for='player-skip'>{settings.playerSkip ? 'On' : 'Off'}</label>
   </div>
@@ -173,7 +173,7 @@
 
 <h4 class='mb-10 font-weight-bold'>External Player Settings</h4>
 <SettingCard title='Enable External Player' description='Tells Shiru to open a custom user-picked external video player to play video, instead of using the built-in one.'>
-  <div class='custom-switch'>
+  <div class='custom-switch fit-content'>
     <input type='checkbox' id='player-external-enabled' bind:checked={settings.enableExternal} />
     <label for='player-external-enabled'>{settings.enableExternal ? 'On' : 'Off'}</label>
   </div>

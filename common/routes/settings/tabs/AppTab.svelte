@@ -106,7 +106,7 @@
 </script>
 
 <h4 class='mb-10 font-weight-bold'>App Settings</h4>
-<SettingCard title='About This App' description="Restart may be required for some settings to take effect. If you don't know what settings do what, use defaults." class='d-lg-none'>
+<SettingCard title='About This App' description='Not sure what a setting does? Leave it as default. Some settings require the app to be restarted to take effect.' class='d-lg-none'>
   <div class='d-flex flex-column'>
     <span class='text-nowrap'>{version ? `v${version} ${semver.prerelease(version) ? `(Nightly)` : ``}` : ``} {platformMap[VERSION.platform] || 'dev'} {VERSION.arch || 'dev'} {capitalize(VERSION.session) || ''}</span>
     <button type='button' use:click={() => { toast('Update is downloading...', { description: 'This may take a moment, the update will be ready shortly.' }) }} class='btn btn-primary mt-5 d-none align-items-center justify-content-center' style='background-color: var(--tertiary-color-light);' class:d-flex={$updateState === 'downloading'}><span class='text-truncate'>Update Downloading...</span></button>

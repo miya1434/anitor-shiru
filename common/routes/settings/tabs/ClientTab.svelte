@@ -30,7 +30,7 @@
 {#if SUPPORTS.doh}
   <h4 class='mb-10 font-weight-bold'>DNS Settings</h4>
   <SettingCard title='Use DNS Over HTTPS' description='Enables DNS Over HTTPS, useful if your ISP blocks certain domains.'>
-    <div class='custom-switch'>
+    <div class='custom-switch fit-content'>
       <input type='checkbox' id='rss-dohtoggle' bind:checked={settings.enableDoH} />
       <label for='rss-dohtoggle'>{settings.enableDoH ? 'On' : 'Off'}</label>
     </div>
@@ -57,13 +57,13 @@
   </div>
 </SettingCard>
 <SettingCard title='Persist Files' description="Keeps torrents files instead of deleting them after a new torrent is played, this will quickly fill up your storage. Seeding Limit will be prioritized, once the limit is reached the files will be deleted if persist files is disabled. Queued torrents for pre-download will be automatically deleted if they are unable to seed and persist files is disabled.">
-  <div class='custom-switch'>
+  <div class='custom-switch fit-content'>
     <input type='checkbox' id='torrent-persist' bind:checked={settings.torrentPersist} />
     <label for='torrent-persist'>{settings.torrentPersist ? 'On' : 'Off'}</label>
   </div>
 </SettingCard>
 <SettingCard title='Streamed Download' description="Only downloads the single file that's currently being watched, instead of downloading an entire batch of episodes. Saves bandwidth and reduces strain on the peer swarm. Queued torrents for pre-download completely ignore this setting but will be paused until the current file being watched is fully downloaded.">
-  <div class='custom-switch'>
+  <div class='custom-switch fit-content'>
     <input type='checkbox' id='torrent-streamed-download' bind:checked={settings.torrentStreamedDownload} />
     <label for='torrent-streamed-download'>{settings.torrentStreamedDownload ? 'On' : 'Off'}</label>
   </div>
@@ -89,25 +89,25 @@
   <ClampedNumber bind:bindTo={settings.dhtPort} min={0} max={65536} class='form-control text-right bg-dark mw-100 w-100 mw-full'/>
 </SettingCard>
 <SettingCard title='Disable DHT' description='Disables Distributed Hash Tables for use in private trackers to improve privacy. Might greatly reduce the amount of discovered peers.'>
-  <div class='custom-switch'>
+  <div class='custom-switch fit-content'>
     <input type='checkbox' id='torrent-dht' bind:checked={settings.torrentDHT} />
     <label for='torrent-dht'>{settings.torrentDHT ? 'On' : 'Off'}</label>
   </div>
 </SettingCard>
 <SettingCard title='Disable PeX' description='Disables Peer Exchange for use in private trackers to improve privacy. Might greatly reduce the amount of discovered peers.'>
-  <div class='custom-switch'>
+  <div class='custom-switch fit-content'>
     <input type='checkbox' id='torrent-pex' bind:checked={settings.torrentPeX} />
     <label for='torrent-pex'>{settings.torrentPeX ? 'On' : 'Off'}</label>
   </div>
 </SettingCard>
 <SettingCard title='Disable µTP' description='Disables the µTP (UDP-based) peer connection protocol. May improve stability on some networks but can reduce the number of available peers.'>
-  <div class='custom-switch'>
+  <div class='custom-switch fit-content'>
     <input type='checkbox' id='torrent-utp' bind:checked={settings.torrentUTP} />
     <label for='torrent-utp'>{settings.torrentUTP ? 'On' : 'Off'}</label>
   </div>
 </SettingCard>
 <SettingCard title='Disable Auto-Load' description='Disables loading the previously downloaded torrent on startup. Allowing the previous torrent to auto-load can increase your bandwidth usage, its recommended to keep this disabled on Android. All seeding and pre-downloading torrents will be marked as completed.'>
-  <div class='custom-switch'>
+  <div class='custom-switch fit-content'>
     <input type='checkbox' id='disable-torrent-autoload' bind:checked={settings.disableStartupTorrent} />
     <label for='disable-torrent-autoload'>{settings.disableStartupTorrent ? 'On' : 'Off'}</label>
   </div>

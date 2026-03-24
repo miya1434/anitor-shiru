@@ -96,7 +96,7 @@
         <div class='controls d-flex align-items-center flex-wrap ml-10'>
           <button type='button' tabindex='-1' class='position-absolute profile-safe-area top-0 right-0 h-full w-100 bg-transparent border-0 shadow-none not-reactive' use:click={() => {}}/>
           {#if !profile.reauth}
-            <button type='button' class='custom-switch bg-transparent border-0 z-1' data-toggle='tooltip' data-placement='left' data-title='Sync List Entries' use:click|stopPropagation>
+            <button type='button' class='custom-switch fit-content bg-transparent border-0 z-1' data-toggle='tooltip' data-placement='left' data-title='Sync List Entries' use:click|stopPropagation>
               <input type='checkbox' id='sync-{profile.viewer.data.Viewer.id}' checked={$sync.includes(profile.viewer.data.Viewer.id)} use:click={() => toggleSync(profile)} />
               <label for='sync-{profile.viewer.data.Viewer.id}'><br/></label>
             </button>

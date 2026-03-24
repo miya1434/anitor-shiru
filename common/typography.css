@@ -154,6 +154,9 @@
   .pt-md-50 {
     padding-top: 5rem !important;
   }
+  .rounded-md-10 {
+    border-radius: 1rem !important;
+  }
 }
 
 @media (min-width: 993px) {
